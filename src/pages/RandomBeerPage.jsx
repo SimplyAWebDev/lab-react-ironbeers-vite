@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const API_URL = 'https://ih-beers-api2.herokuapp.com';
 
 /* Fetch data */
 const fetchRandomBeer = async (setter) => {
   try {
-    const response = await fetch('https://ih-beers-api2.herokuapp.com/beers/random');
-    if (response.status === 200) {
-      const randomBeer = await response.json();
-      setter(randomBeer);
-    }
+    const { data } = await axios.get(`${API_URL}/beers/random`);
+    setter(data);
   } catch (error) {
     console.log('Error fetching random beer:', error);
   }
