@@ -1,5 +1,3 @@
-import React from "react";
-import HomePage from "../pages/HomePage";
 import { Link } from "react-router-dom";
 import homeIcon from "../assets/home-icon.png"
 

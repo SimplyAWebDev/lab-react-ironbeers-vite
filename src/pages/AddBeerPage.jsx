@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const API_URL = 'https://ih-beers-api2.herokuapp.com';
 
 const AddBeerPage = () => {
   const navigate = useNavigate();
@@ -16,25 +19,18 @@ const AddBeerPage = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://ih-beers-api2.herokuapp.com/beers/new', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          tagline: tagLine,
-          description,
-          first_brewed: firstBrewed,
-          brewers_tips: brewersTips,
-          attenuation_level: attenuationLevel,
-          contributed_by: contributedBy,
-        }),
+      const response = await axios.post(`${API_URL}/beers/new`, {
+        name,
+        tagline: tagLine,
+        description,
+        first_brewed: firstBrewed,
+        brewers_tips: brewersTips,
+        attenuation_level: attenuationLevel,
+        contributed_by: contributedBy,
       });
 
       if (response.status === 200) {
         console.log('New beer created successfully!');
-        // You can redirect to a success page or perform other actions here.
         navigate('/'); // Redirect to the home page after successful creation
       } else {
         console.log('Failed to create new beer:', response.status);
@@ -50,32 +46,53 @@ const AddBeerPage = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Name:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
         <label>
           Tagline:
-          <input type="text" value={tagLine} onChange={(e) => setTagLine(e.target.value)} />
+          <input
+            type="text"
+            name="tagline"
+            value={tagLine}
+            onChange={(e) => setTagLine(e.target.value)}
+          />
         </label>
         <label>
           Description:
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+          <textarea
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </label>
         <label>
           First Brewed:
           <input
             type="text"
+            name="first_brewed"
             value={firstBrewed}
             onChange={(e) => setFirstBrewed(e.target.value)}
           />
         </label>
         <label>
-          Brewer's Tips:
-          <input type="text" value={brewersTips} onChange={(e) => setBrewersTips(e.target.value)} />
+          Brewer&apos;s Tips:
+          <input
+            type="text"
+            name="brewers_tips"
+            value={brewersTips}
+            onChange={(e) => setBrewersTips(e.target.value)}
+          />
         </label>
         <label>
           Attenuation Level:
           <input
             type="number"
+            name="attenuation_level"
             value={attenuationLevel}
             onChange={(e) => setAttenuationLevel(e.target.value)}
           />
@@ -84,6 +101,7 @@ const AddBeerPage = () => {
           Contributed By:
           <input
             type="text"
+            name="contributed_by"
             value={contributedBy}
             onChange={(e) => setContributedBy(e.target.value)}
           />

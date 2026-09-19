@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const API_URL = 'https://ih-beers-api2.herokuapp.com';
 
 /* Fetch data */
 const fetchBeer = async (setter, id) => {
-    const response = await fetch(`https://ih-beers-api2.herokuapp.com/beers/${id}`)
-    if (response.status === 200) {
-        const beer = await response.json()
-        setter(beer)
+    try {
+        const { data } = await axios.get(`${API_URL}/beers/${id}`)
+        setter(data)
+    } catch (error) {
+        console.log('Error fetching beer:', error)
     }
 }
 
@@ -16,7 +20,7 @@ const BeerDetailsPage = () => {
 
     useEffect(() => {
         fetchBeer(setOneBeer, beerId)
-    }, []);
+    }, [beerId]);
 
     if(!oneBeer) {
         return <div>Loading...</div>
@@ -36,4 +40,3 @@ const BeerDetailsPage = () => {
 }
 
 export default BeerDetailsPage;
-
